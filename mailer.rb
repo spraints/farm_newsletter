@@ -87,7 +87,7 @@ else
     addresses.each do |destinations|
       mail.to = destinations
       FarmMailer.deliver mail
-      puts "*** Successfully sent #{file} to #{destinations.inspect}", ''
+      puts "*** Successfully sent #{file} to #{destinations.inspect}", '' unless options[:is_test]
     end
   end
 end
