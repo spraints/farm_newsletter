@@ -1,0 +1,9 @@
+1. Write the newsletter in TextEdit.
+
+2A. Open terminal and run
+  fold -s -w 72 > newsletter.txt
+2B. Copy from TextEdit, paste in the terminal window.
+    Press Ctrl-D to close newsletter.txt.
+
+3. To see the available options, run
+  /opt/jruby-1.3.1/bin/jruby /opt/farm_mailer/mailer.rb -h
