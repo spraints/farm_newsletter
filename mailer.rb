@@ -61,7 +61,8 @@ elsif defined? JRUBY_VERSION
   ActionMailer::Base.javamail_settings = {
     :protocol => :smtps,
     :address => 'smtp.gmail.com',
-    :port => 465, # or 587
+    :port => 465,
+    #:port => 587,
     :user_name => 'burkefarm@gmail.com',
     :password => options[:password]
   }
@@ -69,7 +70,8 @@ else
   ActionMailer::Base.delivery_method = :smtp
   ActionMailer::Base.smtp_settings = {
     :address => 'smtp.gmail.com',
-    :port => 587, # or 465
+    :port => 587,
+    #:port => 465
     :tls => true,
     :user_name => 'burkefarm@gmail.com',
     :password => options[:password],
