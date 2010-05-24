@@ -26,6 +26,10 @@ opt_parser = OptionParser.new do |opts|
     options[:password] = v
   end
 
+  opts.on("-s", "--skip SKIP", "Skip some recipients.") do |v|
+    options[:skip] = v.to_i
+  end
+
   opts.on('-h', '--help', 'Show this message') do
     puts opts
     exit
@@ -88,10 +92,26 @@ else
   addresses = File.readlines(options[:mailing_list]).collect { |a| a.strip }
   ARGV.each do |file|
     mail = FarmMailer.create_newsletter File.read(file)
-    addresses.each do |destinations|
-      mail.to = destinations
-      FarmMailer.deliver mail
-      puts "*** Successfully sent #{file} to #{destinations.inspect}", '' unless options[:is_test]
+    addresses.each_with_index do |destinations, i|
+      next if options[:skip] && i < options[:skip]
+      begin
+	mail.to = destinations
+	FarmMailer.deliver mail
+	puts "*** Successfully sent #{file} to #{destinations.inspect}", '' unless options[:is_test]
+      rescue Exception => e
+	if i > 0
+	  puts <<END_MSG
+************************************************************************
+** Some emails were sent. To skip the ones that were sent, run with
+**    -s #{i}
+** For example:
+**    /opt/jruby-1.3.1/bin/jruby /opt/farm_mailer/mailer.rb -s #{i} \
+**       -p password newsletter.txt
+************************************************************************
+END_MSG
+        end
+        raise
+      end
     end
   end
 end
