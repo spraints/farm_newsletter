@@ -9,8 +9,7 @@ RootDir = Pathname.new(__FILE__).expand_path.dirname.to_s
 DefaultMailingList = '/Users/lisa/Documents/farm email list.txt'
 
 options = {
-  :mailing_list => DefaultMailingList,
-  :password => 'todo'
+  :mailing_list => DefaultMailingList
 }
 opt_parser = OptionParser.new do |opts|
   opts.banner = "Usage: #{$0} [options] newsletter.txt"
@@ -34,6 +33,11 @@ opt_parser = OptionParser.new do |opts|
 end
 opt_parser.parse!
 
+unless options[:password]
+  puts "ERROR: You must specify a password!"
+  puts opt_parser
+  exit
+end
 
 ActionMailer::Base.logger = Logger.new(STDOUT)
 ActionMailer::Base.logger.level = Logger::DEBUG
