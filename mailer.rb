@@ -30,6 +30,10 @@ opt_parser = OptionParser.new do |opts|
     options[:skip] = v.to_i
   end
 
+  opts.on("--subject SUBJECT", "Provide a custom subject for the newsletter") do |v|
+    options[:subject] = v
+  end
+
   opts.on('-h', '--help', 'Show this message') do
     puts opts
     exit
@@ -81,8 +85,8 @@ else
 end
 
 class FarmMailer < ActionMailer::Base
-  def newsletter(text, subject_prefix = '')
-    subject subject_prefix.to_s + 'News from the farm - ' + Date.today.to_s
+  def newsletter(text, mail_subject = nil)
+    subject((mail_subject || 'News from the farm') + ' - ' + Date.today.to_s)
     from 'The Farming Engineers <burkefarm@gmail.com>'
     body :text => text
   end
@@ -93,7 +97,7 @@ if ARGV.empty?
 else
   addresses = File.readlines(options[:mailing_list]).collect { |a| a.strip }
   ARGV.each do |file|
-    mail = FarmMailer.create_newsletter File.read(file)
+    mail = FarmMailer.create_newsletter File.read(file), options[:subject]
     addresses.each_with_index do |destinations, i|
       next if options[:skip] && i < options[:skip]
       begin
