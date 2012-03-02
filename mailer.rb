@@ -1,6 +1,7 @@
 require 'csv'
 require 'optparse'
 require 'rubygems'
+gem 'actionmailer', '=2.3.2'
 require 'actionmailer'
 require 'csv'
 require 'pp'
