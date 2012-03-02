@@ -10,6 +10,11 @@
    Usually, you'll run this:
   /opt/jruby-1.3.1/bin/jruby /opt/farm_mailer/mailer.rb -p password newsletter.txt
 
+On Matt's new computer, Matt does this:
+* put the folded newsletter in this directory's 'letters' directory
+* Mail it:
+  ruby mailer.rb -p <password> -l farm-email-list.txt letters/<date>.txt
+
 
 Errors you might see:
 
